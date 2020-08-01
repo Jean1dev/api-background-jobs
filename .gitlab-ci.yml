@@ -1,0 +1,40 @@
+image: node:latest
+
+stages:
+  - install
+  - deploy_prod
+
+cache:
+  paths:
+    - node_modules/
+
+install_dependencies:
+  stage: install
+  script:
+    - npm install
+  artifacts:
+    paths:
+      - node_modules/
+    expire_in: 1 week
+
+deploy_api:
+  stage: deploy_prod
+  image: ruby:latest
+  only:
+    - master
+  script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+    - dpl --provider=heroku --app=api-background-jobs --api-key=$HEROKU_API_KEY_JEAN
+
+deploy_queue:
+  stage: deploy_prod
+  image: ruby:latest
+  only:
+    - master
+  script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+    - dpl --provider=heroku --app=binno-queue --api-key=$HEROKU_API_KEY_JEAN_2

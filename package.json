@@ -1,0 +1,32 @@
+{
+  "name": "api-background-jobs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "dev:server": "NODE_ENV=dev nodemon src/server.js",
+    "dev:queue": "NODE_ENV=dev nodemon src/queue.js",
+    "start": "node src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/binno-dev/api-background-jobs.git"
+  },
+  "author": "Jean",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/binno-dev/api-background-jobs/issues"
+  },
+  "homepage": "https://gitlab.com/binno-dev/api-background-jobs#readme",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "bull": "^3.16.0",
+    "bull-board": "^0.9.0",
+    "dotenv-extended": "^2.8.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.26"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
