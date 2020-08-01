@@ -1,1 +1,2 @@
-web: npm run start:queue
+web: npm start
+worker: npm run start:queue
