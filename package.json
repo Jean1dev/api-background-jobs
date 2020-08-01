@@ -6,7 +6,8 @@
   "scripts": {
     "dev:server": "NODE_ENV=dev nodemon src/server.js",
     "dev:queue": "NODE_ENV=dev nodemon src/queue.js",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "start:queue": "node src/queue.js"
   },
   "repository": {
     "type": "git",

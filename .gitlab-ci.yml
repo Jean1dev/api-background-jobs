@@ -37,4 +37,5 @@ deploy_queue:
     - apt-get update -qy
     - apt-get install -y ruby-dev
     - gem install dpl
+    - echo web: start:queue > Procfile
     - dpl --provider=heroku --app=binno-queue --api-key=$HEROKU_API_KEY_JEAN_2
