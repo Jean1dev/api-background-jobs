@@ -22,6 +22,7 @@ deploy_api:
   image: ruby:latest
   only:
     - master
+  when: manual
   script:
     - apt-get update -qy
     - apt-get install -y ruby-dev
