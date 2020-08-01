@@ -1,0 +1,1 @@
+echo web: npm run start:queue > Procfile
