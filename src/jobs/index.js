@@ -1,5 +1,7 @@
-const RoteirizacaoJob = require('./RoteirizacaoJob')
+const Roteirizacao = require('./RoteirizacaoJob')
+const MultiRoteirizacao = require('./MultiRoteirizacaoJob')
 
 module.exports = [
-    RoteirizacaoJob
+    Roteirizacao,
+    MultiRoteirizacao
 ]

@@ -12,20 +12,19 @@ module.exports = {
   },
   async handle({ data }) {
     const task = await Task.findById(data)
-    await task.update({ situacao: 'PROCESSANDO' })
-
+    await task.updateOne({ situacao: 'PROCESSANDO' })
+    
     axios.post(`${GEOAPI}/criar-rota`, task.payload).then(response => {
       const payload = {
         data: response.data,
         roteirizacaoId: task.roteirizacaoId,
       }
       axios.post(`${DADOSAPI}/roteirizacao/processamento`, payload).then(async () => {
-        await task.update({ situacao: 'CONCLUIDO' })
-        console.log('sucesso', new Date())
+        await task.updateOne({ situacao: 'CONCLUIDO' })
       })
     }).catch(async () => {
-      console.log('falha na task', new Date())
-      await task.update({ situacao: 'ERRO' })
+      console.log('falha ao criar rota', new Date().toISOString())
+      await task.updateOne({ situacao: 'ERRO' })
     })
   },
 };
