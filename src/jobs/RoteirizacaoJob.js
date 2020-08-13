@@ -13,16 +13,21 @@ module.exports = {
   async handle({ data }) {
     const task = await Task.findById(data)
     await task.updateOne({ situacao: 'PROCESSANDO' })
-    
+
     axios.post(`${GEOAPI}/criar-rota`, task.payload).then(response => {
       const payload = {
         data: response.data,
         roteirizacaoId: task.roteirizacaoId,
       }
+      
       axios.post(`${DADOSAPI}/roteirizacao/processamento`, payload).then(async () => {
         console.log('concluido roteirizacao')
         await task.updateOne({ situacao: 'CONCLUIDO' })
+      }).catch(async e => {
+        console.log(`falha ao integrar rota`, new Date().toISOString(), e)
+        await task.updateOne({ situacao: 'ERRO', descricaoErro: 'Erro na integracao da rota com api-dados' })
       })
+
     }).catch(async () => {
       console.log('falha ao criar rota', new Date().toISOString())
       await task.updateOne({ situacao: 'ERRO' })
