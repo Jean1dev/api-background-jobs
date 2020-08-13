@@ -1,3 +1,5 @@
+const BASE_URL = require('../../config/apisUrl').NOTIFICATION_API
+const axios = require('axios')
 const mongoose = require('mongoose')
 
 const Situacao = {
@@ -14,6 +16,18 @@ const schema = new mongoose.Schema({
     payload: { type: Object },
     situacao: { type: Situacao, default: Situacao.NA_FILA },
     descricaoErro: { type: String, required: false }
+})
+
+schema.post('save', function(task) {
+    axios.post(`${BASE_URL}/notificacoes`, {
+        task: {
+            id: task._id,
+            situacao: task.situacao,
+            matrizId: task.matrizId,
+            userId: task.userId,
+            roteirizacaoId: task.roteirizacaoId
+        }
+    })
 })
 
 module.exports = mongoose.model('Tasks', schema)

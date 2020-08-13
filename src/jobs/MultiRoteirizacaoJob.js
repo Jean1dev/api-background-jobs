@@ -10,7 +10,8 @@ module.exports = {
     options: {},
     async handle({ data }) {
         const task = await Task.findById(data)
-        await task.updateOne({ situacao: 'PROCESSANDO' })
+        task.situacao = 'PROCESSANDO'
+        await task.save()
 
         axios.post(`${GEOAPI}/criar-multi-rota`, task.payload).then(response => {
             console.log('lote criado', response.data)
@@ -18,7 +19,9 @@ module.exports = {
 
         }).catch(async e => {
             console.log('falha ao criar rota', new Date().toISOString())
-            await task.updateOne({ situacao: 'ERRO', descricaoErro: 'Erro durante a criacao da rota' })
+            task.situacao = 'ERRO'
+            task.descricaoErro = 'Erro durante a criacao da rota'
+            await task.save
         })
     }
 }
@@ -43,11 +46,14 @@ function consultarLote(lote, nTentativas, task) {
 
             axios.post(`${DADOSAPI}/roteirizacao/processamento`, payload).then(async () => {
                 console.log('lote concluido')
-                await task.updateOne({ situacao: 'CONCLUIDO' })
+                task.situacao = 'CONCLUIDO'
+                await task.save()
                 
             }).catch(async e => {
-                console.log(`falha ao integrar rota`, new Date().toISOString(), e)
-                await task.updateOne({ situacao: 'ERRO', descricaoErro: 'Erro na integracao da rota com api-dados' })
+                console.log(`falha ao integrar rota`, new Date().toISOString(), e.message)
+                task.situacao = 'ERRO'
+                task.descricaoErro = 'Erro na integracao da rota com api-dados'
+                await task.save()
             })
 
         })
