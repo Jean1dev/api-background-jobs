@@ -20,6 +20,7 @@ module.exports = {
         roteirizacaoId: task.roteirizacaoId,
       }
       axios.post(`${DADOSAPI}/roteirizacao/processamento`, payload).then(async () => {
+        console.log('concluido roteirizacao')
         await task.updateOne({ situacao: 'CONCLUIDO' })
       })
     }).catch(async () => {
