@@ -1,6 +1,8 @@
 const config = require('../config/apisUrl')
 const Task = require('../modules/tasks/Task')
 const axios = require('axios')
+const { simplifyGeoPayload } = require('./commons/utils')
+const S3StorageProvider = require('./commons/s3')
 
 const GEOAPI = config.GEOLOCALIZACAO_API_URL
 const DADOSAPI = config.DADOS_API
@@ -15,14 +17,17 @@ module.exports = {
     task.situacao = 'PROCESSANDO'
     await task.save()
 
-    axios.post(`${GEOAPI}/criar-rota`, task.payload).then(response => {
+    axios.post(`${GEOAPI}/criar-rota`, task.payload).then(async response => {
       const payload = {
-        data: response.data,
+        data: simplifyGeoPayload(response.data),
         roteirizacaoId: task.roteirizacaoId,
       }
       
+      payload.uri = await S3StorageProvider.createAndSave(payload)
+      delete payload.data
+
       axios.post(`${DADOSAPI}/roteirizacao/processamento`, payload).then(async () => {
-        console.log('concluido roteirizacao')
+        console.log('concluido roteirizacao', new Date().toISOString())
         task.situacao = 'CONCLUIDO'
         await task.save()
 

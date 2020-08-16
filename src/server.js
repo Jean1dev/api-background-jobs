@@ -12,6 +12,7 @@ app.use(express.json());
 
 app.use('/admin', BullBoard.UI);
 app.post('/task', TaskController.store)
+app.post('/remove-s3-file', TaskController.removeS3file)
 
 app.listen(port, () => {
   console.log('Server running on localhost:', port);
