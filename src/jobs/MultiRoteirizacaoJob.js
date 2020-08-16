@@ -1,6 +1,8 @@
 const Task = require('../modules/tasks/Task')
 const axios = require('axios')
 const config = require('../config/apisUrl')
+const { simplifyGeoPayload } = require('./commons/utils')
+const S3StorageProvider = require('./commons/s3')
 
 const GEOAPI = config.GEOLOCALIZACAO_API_URL
 const DADOSAPI = config.DADOS_API
@@ -33,19 +35,22 @@ function consultarLote(lote, nTentativas, task) {
 
     setTimeout(() => {
         console.log('consultando lote', lote.id)
-        axios.get(`${GEOAPI}/lote/${lote.id}`).then(response => {
+        axios.get(`${GEOAPI}/lote/${lote.id}`).then(async response => {
             const { data } = response
             if (data.hasOwnProperty('status')) {
                 return consultarLote(lote, nTentativas--)
             }
 
             const payload = {
-                data: data,
+                data: simplifyGeoPayload(data),
                 roteirizacaoId: task.roteirizacaoId,
             }
 
+            payload.uri = await S3StorageProvider.createAndSave(payload) 
+            delete payload.data
+            
             axios.post(`${DADOSAPI}/roteirizacao/processamento`, payload).then(async () => {
-                console.log('lote concluido')
+                console.log('lote concluido', new Date().toISOString())
                 task.situacao = 'CONCLUIDO'
                 await task.save()
                 

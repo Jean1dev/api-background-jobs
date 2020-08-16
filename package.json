@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "dev:server": "NODE_ENV=dev nodemon src/server.js",
-    "dev:queue": "NODE_ENV=dev nodemon src/queue.js",
+    "dev:server": "NODE_ENV=dev node src/server.js",
+    "dev:queue": "NODE_ENV=dev node src/queue.js",
     "start": "node src/server.js",
     "start:queue": "node src/queue.js"
   },
@@ -20,6 +20,7 @@
   },
   "homepage": "https://gitlab.com/binno-dev/api-background-jobs#readme",
   "dependencies": {
+    "aws-sdk": "^2.734.0",
     "axios": "^0.19.2",
     "bull": "^3.16.0",
     "bull-board": "^0.9.0",
