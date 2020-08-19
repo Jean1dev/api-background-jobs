@@ -15,7 +15,8 @@ const schema = new mongoose.Schema({
     roteirizacaoId: { type: String, required: true },
     payload: { type: Object },
     situacao: { type: Situacao, default: Situacao.NA_FILA },
-    descricaoErro: { type: String, required: false }
+    descricaoErro: { type: String, required: false },
+    s3uri: { type: String, required: false },
 })
 
 schema.post('save', function(task) {
@@ -25,7 +26,8 @@ schema.post('save', function(task) {
             situacao: task.situacao,
             matrizId: task.matrizId,
             userId: task.userId,
-            roteirizacaoId: task.roteirizacaoId
+            roteirizacaoId: task.roteirizacaoId,
+            uri: task.s3uri
         }
     })
 })

@@ -52,6 +52,7 @@ function consultarLote(lote, nTentativas, task) {
             axios.post(`${DADOSAPI}/roteirizacao/processamento`, payload).then(async () => {
                 console.log('lote concluido', new Date().toISOString())
                 task.situacao = 'CONCLUIDO'
+                task.s3uri = payload.uri
                 await task.save()
                 
             }).catch(async e => {

@@ -29,6 +29,7 @@ module.exports = {
       axios.post(`${DADOSAPI}/roteirizacao/processamento`, payload).then(async () => {
         console.log('concluido roteirizacao', new Date().toISOString())
         task.situacao = 'CONCLUIDO'
+        task.s3uri = payload.uri
         await task.save()
 
       }).catch(async e => {
