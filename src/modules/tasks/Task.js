@@ -27,7 +27,8 @@ schema.post('save', function(task) {
             matrizId: task.matrizId,
             userId: task.userId,
             roteirizacaoId: task.roteirizacaoId,
-            uri: task.s3uri
+            uri: task.s3uri,
+            descricaoErro: task.descricaoErro
         }
     })
 })

@@ -22,8 +22,9 @@ module.exports = {
         }).catch(async e => {
             console.log('falha ao criar rota', new Date().toISOString())
             task.situacao = 'ERRO'
-            task.descricaoErro = 'Erro durante a criacao da rota'
-            await task.save
+            task.descricaoErro = error.response.data.message || ''
+            axios.post(`${DADOSAPI}/roteirizacao/falha`, { roteirizacaoId: task.roteirizacaoId })
+            await task.save()
         })
     }
 }
@@ -46,15 +47,15 @@ function consultarLote(lote, nTentativas, task) {
                 roteirizacaoId: task.roteirizacaoId,
             }
 
-            payload.uri = await S3StorageProvider.createAndSave(payload) 
+            payload.uri = await S3StorageProvider.createAndSave(payload)
             delete payload.data
-            
+
             axios.post(`${DADOSAPI}/roteirizacao/processamento`, payload).then(async () => {
                 console.log('lote concluido', new Date().toISOString())
                 task.situacao = 'CONCLUIDO'
                 task.s3uri = payload.uri
                 await task.save()
-                
+
             }).catch(async e => {
                 console.log(`falha ao integrar rota`, new Date().toISOString(), e.message)
                 task.situacao = 'ERRO'
