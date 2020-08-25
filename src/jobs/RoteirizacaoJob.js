@@ -9,9 +9,7 @@ const DADOSAPI = config.DADOS_API
 
 module.exports = {
   key: 'RoteirizacaoQueue',
-  options: {
-    delay: 5000,
-  },
+  options: {},
   async handle({ data }) {
     const task = await Task.findById(data)
     task.situacao = 'PROCESSANDO'
