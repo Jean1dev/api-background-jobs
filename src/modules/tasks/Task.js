@@ -17,6 +17,7 @@ const schema = new mongoose.Schema({
     situacao: { type: Situacao, default: Situacao.NA_FILA },
     descricaoErro: { type: String, required: false },
     s3uri: { type: String, required: false },
+    created_at: { type: Date, default: new Date() }
 })
 
 schema.post('save', function(task) {
