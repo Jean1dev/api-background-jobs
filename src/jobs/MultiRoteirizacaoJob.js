@@ -42,7 +42,8 @@ function consultarLote(lote, nTentativas, task) {
                 return consultarLote(lote, nTentativas--)
             }
 
-            data.orderRequestedPoints = lote.orderRequestedPoints
+            data.properties = {}
+            data.properties.orderRequestedPoints = lote.properties.orderRequestedPoints
             const payload = {
                 data: simplifyGeoPayload(data),
                 roteirizacaoId: task.roteirizacaoId,
