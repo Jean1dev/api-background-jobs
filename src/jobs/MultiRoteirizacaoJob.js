@@ -8,14 +8,14 @@ const GEOAPI = config.GEOLOCALIZACAO_API_URL
 const DADOSAPI = config.DADOS_API
 
 module.exports = {
-    key: 'MultiRoteirizacaoQueue',
+    key: 'BatchRoteirizacaoQueue',
     options: {},
     async handle({ data }) {
         const task = await Task.findById(data)
         task.situacao = 'PROCESSANDO'
         await task.save()
 
-        axios.post(`${GEOAPI}/criar-multi-rota`, task.payload).then(response => {
+        axios.post(`${GEOAPI}/criar-batch-rota`, task.payload).then(response => {
             console.log('lote criado', response.data)
             consultarLote(response.data, 5, task)
 
@@ -42,6 +42,7 @@ function consultarLote(lote, nTentativas, task) {
                 return consultarLote(lote, nTentativas--)
             }
 
+            data.orderRequestedPoints = lote.orderRequestedPoints
             const payload = {
                 data: simplifyGeoPayload(data),
                 roteirizacaoId: task.roteirizacaoId,

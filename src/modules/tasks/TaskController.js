@@ -19,7 +19,7 @@ module.exports = {
 async function createJob(task) {
     const { waypoints } = task.payload
     if (waypoints && waypoints.length > 20) {
-        await Queue.add('MultiRoteirizacaoQueue', task._id)
+        await Queue.add('BatchRoteirizacaoQueue', task._id)
         return
     }
 
