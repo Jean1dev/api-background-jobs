@@ -3,8 +3,8 @@ const Queue = require('../../queue/index')
 
 module.exports = {
     async store(req, res) {
-        const { payload, matrizId, userId, roteirizacaoId } = req.body
-        const task = await Task.create({ payload, matrizId, userId, roteirizacaoId })
+        const { payload, matrizId, userId, roteirizacaoId, api } = req.body
+        const task = await Task.create({ payload, matrizId, userId, roteirizacaoId, api })
         await createJob(task)
         return res.json(task)
     },

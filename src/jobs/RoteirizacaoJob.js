@@ -14,8 +14,13 @@ module.exports = {
     const task = await Task.findById(data)
     task.situacao = 'PROCESSANDO'
     await task.save()
+    let url = `${GEOAPI}/criar-rota`
 
-    axios.post(`${GEOAPI}/criar-rota`, task.payload).then(async response => {
+    if (task.api === 'v2') {
+      url = `${GEOAPI}/v2/criar-rota`
+    }
+
+    axios.post(url, task.payload).then(async response => {
       const payload = {
         data: simplifyGeoPayload(response.data),
         roteirizacaoId: task.roteirizacaoId,
