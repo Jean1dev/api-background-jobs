@@ -65,6 +65,12 @@ function consultarLote(lote, nTentativas, task) {
                 await task.save()
             })
 
+        }).catch(async error => {
+            console.log('falha ao consultar lote', new Date().toISOString())
+            task.situacao = 'ERRO'
+            task.descricaoErro = error.response.data.message || ''
+            axios.post(`${DADOSAPI}/roteirizacao/falha`, { roteirizacaoId: task.roteirizacaoId })
+            await task.save()
         })
     }, 2000)
 }
