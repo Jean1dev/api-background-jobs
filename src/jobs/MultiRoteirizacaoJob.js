@@ -39,7 +39,7 @@ function consultarLote(lote, nTentativas, task) {
         axios.get(`${GEOAPI}/lote/${lote.id}`).then(async response => {
             const { data } = response
             if (data.hasOwnProperty('status')) {
-                return consultarLote(lote, nTentativas--)
+                return consultarLote(lote, nTentativas--, task)
             }
 
             data.properties = {}

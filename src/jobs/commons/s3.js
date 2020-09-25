@@ -3,6 +3,7 @@ const AWS = require('aws-sdk')
 const S3 = new AWS.S3({
     region: process.env.AWS_DEFAULT_REGION
 })
+const BUCKET = process.env.AWS_BUCKET
 
 class S3StorageProvider {
 
@@ -12,7 +13,7 @@ class S3StorageProvider {
         const filtcontent = await readFile(filename)
 
         await S3.putObject({
-            Bucket: 'binnoroteirizacao',
+            Bucket: BUCKET,
             Key: filename,
             ACL: 'public-read',
             Body: filtcontent,
@@ -24,7 +25,7 @@ class S3StorageProvider {
 
     async removeFile(key) {
         await S3.deleteObject({
-            Bucket: 'binnoroteirizacao',
+            Bucket: BUCKET,
             Key: key
         }).promise()
     }
