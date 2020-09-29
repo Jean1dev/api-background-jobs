@@ -22,7 +22,7 @@ module.exports = {
         }).catch(async e => {
             console.log('falha ao criar rota', new Date().toISOString())
             task.situacao = 'ERRO'
-            task.descricaoErro = error.response.data.message || ''
+            task.descricaoErro = e.response.data.message || ''
             axios.post(`${DADOSAPI}/roteirizacao/falha`, { roteirizacaoId: task.roteirizacaoId })
             await task.save()
         })
