@@ -36,3 +36,4 @@ schema.post('save', function(task) {
 })
 
 module.exports = mongoose.model('Tasks', schema)
+exports.schema = schema
