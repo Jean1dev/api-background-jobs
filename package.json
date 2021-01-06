@@ -23,7 +23,7 @@
     "@sentry/node": "^5.24.2",
     "@sentry/tracing": "^5.24.2",
     "aws-sdk": "^2.734.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bull": "^3.16.0",
     "bull-board": "^0.9.0",
     "dotenv-extended": "^2.8.0",
